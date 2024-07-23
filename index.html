@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Type to Equation</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    
+    <!-- JS PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+ 
+    <meta name="description" content="Convert text to equations effortlessly with our minimalist and powerful text to equation writer. Download your equations as PNG files. Perfect for educators, students, and professionals.">
+    <meta name="keywords" content="text to equation converter online free, free equation writer online,text to equation convert, text to equation, equation converter online, download equation as PNG, minimalist equation tool, powerful equation writer">
+    <meta name="author" content="VersatileX EduSystem">
+    <link rel="icon" href="assets/misc/logo.png">
+    <meta property="og:title" content="Text to Equation Writer">
+    <meta property="og:description" content="Convert text to equations effortlessly and download them as PNG files. Ideal for educators, students, and professionals.">
+    <meta property="og:image" content="assets/misc/logo.png">
+    <meta property="og:url" content="https://versatilex.in/tools/latex/index.php">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Text to Equation Writer">
+    <meta name="twitter:description" content="Convert text to equations effortlessly and download them as PNG files. Ideal for educators, students, and professionals.">
+    <meta name="twitter:image" content="assets/misc/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+
+<!-- Header -->
+<header class="header-main">
+    <nav class="header-nav">
+        <div class="header-logo">
+            <img src="assets/misc/logo.png" alt="Logo"> 
+            <h2 class="header-title">Type to Equation</h2>
+        </div>
+        <div class="header-menu-toggle" onclick="toggleMenu()"> 
+            <i class="fas fa-bars"></i>            
+        </div>
+        <ul class="header-links">
+            <li><a href="v2.html">MathJax 2</a></li>
+            <li><a href="index.html">MathJax 3</a></li>
+            
+        </ul>
+    </nav>
+</header> 
+
+<p>A javascript based minimalist but powerful type to equation editor v3</p>
+<br>
+
+
+<p id="popup" style="background-color:#ffffff00;  margin-bottom: 10px;">
+    <a href="user-manual.html" target="_blank" style="text-decoration: none; color: inherit;">
+      <i class="fas fa-info-circle"></i> User Manual 
+    </a>
+  </p>
+  
+
+<div class="layout-container">
+  <label for="autocompleteCheck" class="autocomplete">
+      <input type="checkbox" id="autocompleteCheck" class="autocomplete">
+      AutoComplete (Recommended)
+  </label>
+  <p id="openSuggestions" class="openSuggestions">Suggestions Panel</p>
+</div>
+
+<textarea id="latexInput" placeholder="Type your equation here..."></textarea>
+<div id="renderedEquation"></div>
+
+<button id="download-png" style="background-color: green; color: white;">
+    <i class="fas fa-download"></i> Download
+</button>
+    <button onclick="resetInput()" style="background-color: red; color: white;">
+        <i class="fas fa-redo"></i> Reset
+    </button>
+
+
+<script src="assets/script/dialect_v3.js"></script>
+<script src="assets/script/header.js"></script>
+<script src="assets/script/autocomplete.js"></script>
+<script src="assets/script/session.js"></script>
+<script src="assets/script/download.js"></script>
+<script src="assets/script/suggestions.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
+<footer class="footer-container">
+    <p class="footer-developed">Made with <i class="fas fa-heart"></i> by <a href="https://github.com/shashwatanayak" class="footer-link">Shashwata</a></p>
+    <p class="footer-center">
+        <a href="https://github.com/shashwatanayak/text-to-equation" class="footer-repo-link">GitHub Repository</a>
+    </p>
+</footer>
+</body>
+</html>

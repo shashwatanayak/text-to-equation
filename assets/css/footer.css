@@ -1,0 +1,35 @@
+.footer-developed {
+    margin: 0;
+    padding: 0;
+    font-size: 1.1em;
+    font-family: 'Poppins', cursive;
+}
+
+.footer-developed .fas {
+    color: #e25555;
+}
+
+.footer-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+.footer-center {
+    margin-top: 10px;
+}
+
+.footer-repo-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 1.0em;
+    font-weight: bold;
+}
+
+.footer-repo-link:hover {
+    text-decoration: underline;
+}

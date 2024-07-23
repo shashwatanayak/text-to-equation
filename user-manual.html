@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Manual</title>
+  
+  
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4 {
+            color: #333;
+        }
+        h1 {
+            font-size: 2em;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 1.5em;
+        }
+        h3 {
+            font-size: 1.25em;
+            margin-top: 1.25em;
+        }
+        h4 {
+            font-size: 1.1em;
+            margin-top: 1.1em;
+            color: #666;
+        }
+        p {
+            margin: 10px 0;
+        }
+        #contentList {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        #contentList li {
+            margin: 5px 0;
+            cursor: pointer;
+            color: blue;
+            
+        }
+        #contentList li:hover {
+            text-decoration: none;
+        }
+        .content-section {
+            margin-bottom: 2em;
+            padding: 10px;
+            border-left: 3px solid #333;
+            background: #f9f9f9;
+        }
+        .sub-content {
+            margin-left: 400px; /* Consistent indent from the left */
+            color: darkcyan; /* Distinct color for sub-sections */
+        }
+
+    #searchBox {
+        margin-bottom: 20px;
+        position: relative;
+        max-width: 90%;
+        width: 100%;
+       
+    }
+    #searchBox input {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 1em;
+        border: 2px solid #4CAF50;
+        border-radius: 25px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    #searchBox input:focus {
+        border-color: #45a049;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        outline: none;
+    }
+    #searchResults {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 10px;
+        max-width: 90%;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    #searchResults li {
+        margin: 0;
+        padding: 10px 20px;
+        cursor: pointer;
+        color: #333;
+        border-bottom: 1px solid #eee;
+        transition: background 0.3s, color 0.3s;
+    }
+    #searchResults li:hover {
+        background: #f9f9f9;
+        color: #4CAF50;
+    }
+    #searchResults li:last-child {
+        border-bottom: none;
+    }
+    #searchResults li a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 4px;
+            text-align: left;
+            height: 30px;
+            width: 100px;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .command {
+            background-color: #BDEDFF;
+            padding: 1px 3px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+
+
+
+
+
+  
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const contentSections = document.querySelectorAll('.jsContent');
+        const contentList = document.getElementById('contentList');
+        const searchBox = document.getElementById('searchBox');
+        const searchInput = searchBox.querySelector('input');
+        const searchResults = document.getElementById('searchResults');
+
+        function fetchContent() {
+            contentSections.forEach((section, sectionIndex) => {
+                const mainHeading = section.querySelector('h3');
+                const subHeadings = section.querySelectorAll('.jsSubContent');
+
+                const mainListItem = document.createElement('li');
+                mainListItem.textContent = mainHeading.textContent;
+                mainListItem.dataset.target = section.id;
+
+                mainListItem.addEventListener('click', function() {
+                    document.getElementById(this.dataset.target).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+
+                contentList.appendChild(mainListItem);
+
+                subHeadings.forEach((subHeading, subIndex) => {
+                    const subListItem = document.createElement('li');
+                    subListItem.textContent = subHeading.textContent;
+                    const subContentId = `sub-content-${sectionIndex}-${subIndex}`;
+                    subHeading.id = subContentId;
+                    subListItem.dataset.target = subContentId;
+                    subListItem.classList.add('sub-content');
+
+                    subListItem.addEventListener('click', function() {
+                        document.getElementById(this.dataset.target).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    });
+
+                    contentList.appendChild(subListItem);
+                });
+            });
+        }
+
+        function searchContent() {
+            const query = searchInput.value.toLowerCase();
+            searchResults.innerHTML = ''; // Clear previous results if query is empty
+
+            if (query.length === 0) return;
+
+            contentSections.forEach((section) => {
+                const textElements = section.querySelectorAll('*:not(script):not(style)');
+                textElements.forEach((element) => {
+                    const elementText = element.textContent.toLowerCase();
+                    if (elementText.includes(query)) {
+                        const resultItem = document.createElement('li');
+                        let previewText;
+
+                        if (element.closest('tr')) {
+                            // Extract and display each cell's content in the row
+                            const cells = Array.from(element.closest('tr').cells);
+                            previewText = cells.map(cell => cell.textContent.trim()).join(' | ');
+                        } else {
+                            const words = elementText.split(' ');
+                            const wordIndex = words.findIndex(word => word.includes(query));
+                            previewText = words.slice(Math.max(wordIndex - 10, 0), wordIndex + 7).join(' ');
+                        }
+
+                        resultItem.textContent = `${element.tagName === 'TD' || element.tagName === 'TH' ? 'Symbol' : element.tagName}: ${previewText}`;
+
+                        if (!element.id) {
+                            element.id = `search-result-${element.tagName}-${Math.random().toString(36).substr(2, 9)}`; // Assign a unique ID if not present
+                        }
+                        resultItem.dataset.target = element.id;
+
+                        resultItem.addEventListener('click', function() {
+                            document.getElementById(this.dataset.target).scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        });
+
+                        searchResults.appendChild(resultItem);
+                    }
+                });
+            });
+        }
+
+        fetchContent();
+        searchInput.addEventListener('input', searchContent);
+    });
+</script>
+
+
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const subContents = document.querySelectorAll('.sub-content');
+            subContents.forEach(function(subContent) {
+                subContent.style.marginLeft = '40px'; // Set consistent indentation from the left
+                subContent.style.color='DeepSkyBlue';
+            });
+        });
+    </script>
+    
+    
+
+    
+    
+    
+    
+    
+</head>
+<body>
+    <h1>About and User Manual</h1>
+    <p style="text-align:justify">Hello, I'm Shashwata. I created this site to provide a mobile-friendly and user-friendly LaTeX writing environment. Many existing programs are though really advanced and complex but not designed for on-the-go use and for beginners who don't know LaTeX, so this site aims to make equation writing as intuitive as conversational mathematics, especially for beginners. You can use the search box to search anything you want like symbols, functions etc.</p>
+
+    <div id="searchBox">
+        <input type="text" placeholder="Search..." />
+    </div>
+    <ul id="searchResults"></ul>
+
+    <h2>Content</h2>
+    <p style="font-size:12px; margin-top:-15px; color:red">You can click on any content item to navigate to that section.</p>
+    <ul id="contentList"></ul>
+
+    <div id="contentSections">
+        <div id="section1" class="jsContent content-section">
+    <h3>Section 1: Introduction</h3>
+    <I>The interface is simple: type your equation into the text area, and you'll see the output immediately. There are two versions available, Version 2 and Version 3. Both versions offer the same functionalities, but they differ in that Version 3 uses MathJax 3 which is the latest version, while Version 2 uses MathJax 2 which is retained because some functions do not perform well on MathJax 3. Additionally, Version 3 supports storing equations in your browser's memory to prevent loss, a feature not available with Version 2.
+   </i>
+    <h4 class="jsSubContent">Section 1.1: The AutoComplete Function</h4>
+    <p>If you enable this feature, whenever you begin typing curly braces, it will immediately provide hints directly in the text area. The hints are automatically selected, ensuring they don't disrupt your writing flow while also guiding you on how to construct the specific object</p>
+    <h4 class="jsSubContent">Section 1.2: The Suggestions button</h4>
+    <p>When you click on the suggestions button, a popup will appear at the top left of the screen, which you can drag to a position that suits you best. If you're unsure of certain equation shortcodes or the corresponding LaTeX syntax, simply click on suggestions and start typing what you're looking for. For example, if you forget how to write an integral with limits, typing "int" will display all related functions that match the keyword. Selecting one will automatically copy it for you. This feature is also available on mobile devices; however, the click-to-copy and drag functionalities are disabled, and the popup will remain fixed at the top of your screen. Essentially, it's an assistive tool designed as a popup to help you write equations without disruption.</p>
+    <h4 class="jsSubContent">Section 1.3: The Download Button</h4>
+    <p>When you click on the download button, a popup will appear offering three format options: SVG, PNG, and PDF. You can select one, two, or all three formats based on your needs. The equation will be downloaded in the selected format(s), and the size will automatically adjust to fit the equation while maintaining left alignment for a professional look. If you choose more than one format, you'll need to grant permission when prompted by the "The site wants to Download Multiple Files" alert.</p>
+    <h4 class="jsSubContent">Section 1.4: The Reset Button</h4>
+    <p>By default, your equations are not stored on our servers; instead, they are saved locally in your browser to prevent loss due to accidental page refreshes. This means that your equations will still be accessible even if you refresh the page. If you wish to erase your equations and start afresh, you can click the Reset button.<br><br>
+ However, this feature is not available in Version 2 (MathJax 2) and the data is not stored permanently. It is only saved for the duration of your browser session, so closing your browser or clearing data, or being logged out for an extended period will result in the data being erased.</p>
+    </div>
+    <div id="section2" class="jsContent content-section">
+<h3>Section 2: Typing Basic Functions</h3>
+<p>You can type basic functions as you type on calculator</p>
+<h4 class="jsSubContent">Section  2.1: Typing Regular Mathematics Expressions</h4>
+<p><strong>+</strong><br>  <strong>-</strong> <br><strong>*</strong><br><strong>÷</strong> <br>can be typed directly. </p><br>
+
+<h4 class="jsSubContent">Section  2.2: Fractions Operations</h4>
+
+<p>• To type fraction you can use <strong>"/"</strong> sign and when multiple variables are there in nominator and denominator you can use this format <strong>{numerator}/{denominator}</strong>. It will yield this
+\(\frac{numerator}{denominator}\) <br><br>
+• And when writing complex equation this way might fail so you can use the regular latex syntax like this <br> <strong>\frac {numerator} {denominator}</strong></p>
+
+
+<h4 class="jsSubContent">Section  2.3: Space Operation</h4>
+
+• You can simply use <space> key to enter space. <br> <br>
+
+• But, When you want to enter <space> in between equations, you can do it by typing a backslash i.e. "<strong>\</strong>"
+
+<h4 class="jsSubContent">Section 2.4: Power/Superscript Operations</h4>
+<p>You can type a hat i.e. "<strong>^</strong>" icon to enable Superscript. But it will only superscript the right next character, However if you want to superscript multiple characters, You need to bind that superscript characters with curly braces <strong>{ }</strong></p><br>e.g. Writing <i>e^{sinx}</i> will yield \(e^{\sin x}\)
+Whereas writing <i>e^sinx</i> will yield \(e^sinx\)
+<h4 class="jsSubContent">Section  2.5: Subscript Operations</h4>
+<p>You can use underscore "<strong>_</strong>" to write subscript. Binding it with curly braces <strong>{ }</strong> will help you type multiple characters in subscript.</p>
+<p>e.g. <strong>a_bc</strong> will yield \(a_bc\) whereas <br>
+<strong>a_{bc}</strong> will yield \(a_{bc}\)
+
+</p>
+</div>
+<div id="section3" class="jsContent content-section">
+    <h3>Section 3: Writing Symbols</h3>
+    <p>Writing Symbols is carefully designed to let you write just like we talk in Physics or Mathematics, for example, H psi = E psi. Yeah that much easy that is</p>
+    <h4 class="jsSubContent">Section  3.1: Writing Symbols of Physics and Mathematics</h4>
+    <p>Writing Symbols is so easy, Just type the symbols name followed by a backslash i.e. "<strong>\</strong>". It will print the symbol for you. </p>
+    <p>Writing <strong>psi\</strong> will yield \(\psi\) <br> Writing <strong>phi\</strong> will yield \(\phi\) <br>
+    That's much easy this is! <br>
+    <i style="color:darkCyan">And most of the symbols are written in the way we talk like <strong>closeintegral\</strong> and not in the way latex keyword like <strong>oint</strong>, So It's quite easy for you to identify keyword</i>
+    </p>
+    <h4 class="jsSubContent">Section  3.2: Unsure about the spelling of the symbols</h4>
+    <p>It's too easy since all the shortcuts are in our dialect, still if you forget or unsure about the name, You can always click on <button style="padding:2px;color:white; background:#70a7ff; border:none; border-radius:5px">Suggestion</button> button to open the suggestions popup where you can try searching different combinations to find that symbol and you can even visit this <strong>help</strong> section to look for the symbols shortcuts chart which is in the end of this section</p>
+    <h4 class="jsSubContent">Section  3.3: When the shortcut for Symbol is not available</h4>
+    <p>Actually our symbol shortcut list is vast, So you can get most of the shortcuts but if some reason it is not available, You can always use latex.</p>
+    <h4 class="jsSubContent">Section  3.4: List of shortcuts</h4>
+    <p><i style="color:darkCyan">The list of shortcuts is provided in the table below, along with their notations and descriptions.</i></p><br>
+    <div id="tableDiv"></div>
+    </div>
+    
+    <div id="section4" class="jsContent content-section">
+    <h3>Section 4: Handling Derivatives</h3>
+    It's extremely easy to handle derivatives with this editor.
+    <h4 class="jsSubContent">Section  4.1: Basic Derivatives</h4>
+    <p>You can write standard <strong>d/dx</strong> type of derivatives it will work.</p>
+    <p>But a direct function has been created, so if you write <strong>derivatives {variable}</strong>, It will give you the derivative</p><br>
+i.e. derivative{x} will yield \(\frac{d}{dx}\).
+    <h4 class="jsSubContent">Section  4.2: Partial Derivatives</h4>
+    <p>You can simply write a tag <strong>partial{variable}</strong> to get partial variable symbol</p>
+    <p>i.e. partial{x} will yield \(\frac{\partial}{\partial x}\)
+</p>
+    <h4 class="jsSubContent">Section  4.3: Basic Derivatives with higher order</h4>
+    <p>Writing higher order derivatives in latex is too boring but here you can achieve it with just one function.</p><br>
+    <p>Simply write <strong>dorder{variable, order}</strong> to obtain derivatives of higher order.</p>
+    <p>i.e. <strong>dorder{x, 3}</strong> will yield \(\begin{align} \frac{d^{3}}{d x^{3}} \end{align}\)
+</p>
+    <h4 class="jsSubContent">Section  4.4: Partial Derivatives with higher order</h4>
+    <p>Simply write porder{variable,order} to obtain partial derivatives of higher order</p>
+    <p><strong>porder{y, 2}</strong> will yield \(\begin{align}\frac{\partial^{2}}{\partial y^{2}}\end{align}\)
+</p>
+    <p> <strong>porder{x,2}e^x sinx</strong> will give \(\begin{align}\frac{\partial^{2}}{\partial x^{2}}e^x sinx\end{align}\)
+</p>
+
+
+    <h4 class="jsSubContent">Section  4.5: Different Types of Derivatives </h4>
+    <p>By playing with all the predetermined derivatives function you can write almost all kind of derivatives.</p>
+    </div>
+    
+    <div id="section5" class="jsContent content-section">
+    <h3>Section 5: Handling Integration</h3>
+    Handling of most type of integration is super easy using our preset programs.
+    <h4 class="jsSubContent">Section  5.1: Writing single integral with and without limit</h4>
+    <p>If you just want to write integral symbol, just write <strong>int\</strong>, It will give the integral symbol i.e. \(\int\)
+</p>
+    <p>If you want to write integration with limit the function is like this <strong>int{low,high}</strong><br>where <br>
+<strong>low</strong> is <strong>low variable</strong><br>
+ and <strong>high</strong> is <strong>high variable</strong> </p>
+    <p> <strong>int{a, b}</strong> will give \(\begin{align}\int_{a}^{b}\end{align}\)
+</p>
+    <h4 class="jsSubContent">Section  5.2: Writing Double integral</h4>
+    <p><strong>doubleintegral\</strong> will give \(\iint\)
+</p>
+    <p><strong>doubleintegral{low,high}</strong> will give the double integral with both the <strong>high</strong> and <strong>low</strong> limits</p>
+    <p>doubleintegral{a,b} will give \(\begin{align}\iint_{a}^{b}\end{align}\) <br>
+<br>
+It will place the limit at the last integral, If you want to write double integral with both different limit, you can use <strong>\!\!</strong> symbol between single integral
+</p>
+    <h4 class="jsSubContent">Section  5.3: Close Integral / Closed Contour Integration</h4>
+    <p> <strong>closeintegral\</strong> will give \(\oint\)
+ </p>
+    <p><strong>Close Integral</strong> with limit can be written as <strong>closeintegral{low,high}</strong></p>
+    <p>e.g. <strong>closeintegral{a,b}</strong> will be rendered as \(\begin{align}\oint_{a}^{b}\end{align}\)
+</p>
+    <h4 class="jsSubContent">Section  5.4: Triple Integral</h4>
+    <p><strong>tripleintegral</strong>\ will give \(\iiint\)
+</p>
+    <p>Triple Integral with limit can be achieved by typing tripleintegral{a,b}, It will apply the limit to last integral and if you want to apply different limit for different integral, you can use <strong>\!\!</strong> tags in between single integrals.</p>
+    <strong><p>tripleintegral{a,b}</strong> will give \begin{align}\iiint_{a}^{b}\end{align}
+</p>
+    
+    <h4 class="jsSubContent">Section  5.5: Adding Multiple Integral</h4>
+    <p>By playing and tweaking the functions, you can achieve whatever integral you want.</p>
+    
+    </div>
+    
+    <div id="section6" class="jsContent content-section">
+    <h3>Section 6: Handling Limit</h3>
+    <p>You can write <strong>lim{variable, approaches}</strong> to obtain the limit</p>
+    <p>i.e. <strong>lim{x, infinity\}</strong> will give \begin{align}\lim_{x \to  \infty}\end{align}</p>
+</div>
+
+
+<div id="section7" class="jsContent content-section">
+    <h3>Section 7: Handling Matrices/Matrix</h3>
+   <p>Handling matrix here is so easy, Here is the step by step explanation for different types of matrices.</p>
+    <h4 class="jsSubContent">Section  7.1: Matrix without Brackets</h4>
+
+    <p>The matrix without bracket syntax is like this </p>
+    <p><strong>beginmatrix a & b & c</strong><br>
+       <strong>d & e & f </strong><br>
+    <strong>endmatrix</strong><br><br>
+    
+Actually, after typing the <strong><i style="color:darkCyan">beginmatrix</i></strong>, and adding a space, you initiate the first row of the matrix. Here, the <strong>&</strong> symbol acts as the column separator. Moving to a new line signifies the start of the second row, and this pattern continues. Finally, the <strong><i style="color:darkCyan">endmatrix</i></strong> marks the end of the matrix and it is then rendered in matrix format.
+</p>
+    <p>If you write <br><br>
+       
+    <strong>beginmatrix a & b & c</strong><br>
+       <strong>d & e & f </strong><br>
+    <strong>g & h </strong> <br>
+    <strong>endmatrix</strong><br><br>
+    it will render as <br> \begin{array}{l}\begin{matrix} a & b & c \\ d & e & f \\ g & h \\ \end{matrix}\end{array}
+     </p>
+    <p><strong>N.B.</strong> <i style="color:darkcyan">Space between <strong>&</strong> is not mandatory, It is done here just for beautification of text</i></p>
+    
+    
+    <h4 class="jsSubContent">Section  7.2: Matrix with Parentheses (Round Bracket)</h4>
+    
+    <p>The matrix with Parantheses or Round bracket syntax is like this </p>
+    <p><strong>begin<strong style="color:darkcyan">p</strong>matrix a & b & c</strong><br>
+       <strong>d & e & f </strong><br>
+    <strong>end<strong style="color:darkcyan">p</strong>matrix</strong><br><br>
+    
+Actually, after typing the <strong><i style="color:darkCyan">beginpmatrix</i></strong>, and adding a space, you initiate the first row of the matrix. Here, the <strong>&</strong> symbol acts as the column separator. Moving to a new line signifies the start of the second row, and this pattern continues. Finally, the <strong><i style="color:darkCyan">endpmatrix</i></strong> marks the end of the matrix and it is then rendered in matrix format.
+</p>
+    <p>If you write <br><br>
+       
+    <strong>beginpmatrix a & b & c</strong><br>
+       <strong>d & e & f </strong><br>
+    <strong>g & h </strong> <br>
+    <strong>endpmatrix</strong><br><br> 
+    it will render as <br> \begin{array}{l}\begin{pmatrix} a & b & c \\ d & e & f \\ g & h \\ \end{pmatrix}\end{array} </p>
+    <p><strong>N.B.</strong> <i style="color:darkcyan">Space between <strong>&</strong> is not mandatory, It is done here just for beautification of text</i></p>
+     
+    
+    <h4 class="jsSubContent">Section  7.3: Matrix with square brackets</h4>
+    
+     <p>The matrix with Square Braackets syntax is like this </p>
+    <p><strong>begin<strong style="color:darkcyan">s</strong>matrix a & b & c</strong><br>
+       <strong>d & e & f </strong><br>
+    <strong>end<strong style="color:darkcyan">s</strong>matrix</strong><br><br>
+    
+Actually, after typing the <strong><i style="color:darkCyan">beginsmatrix</i></strong> or <strong><i style="color:darkCyan">beginbmatrix</i></strong>, and adding a space, you initiate the first row of the matrix. Here, the <strong>&</strong> symbol acts as the column separator. Moving to a new line signifies the start of the second row, and this pattern continues. Finally, the <strong><i style="color:darkCyan">endsmatrix</i></strong> or <strong><i style="color:darkCyan">endbmatrix</i></strong> marks the end of the matrix and it is then rendered in matrix format.
+</p>
+    <p>If you write <br><br>
+       
+ <div style="display: flex; justify-content: space-around; font-size:10px">
+  <div>
+    <span>You can write like this</span><br>
+    <span><strong>begin<strong style="color:darkcyan">s</strong>matrix a &amp; b &amp; c</strong></span><br>
+    <span><strong>d &amp; e &amp; f </strong></span><br>
+    <span><strong>g &amp; h </strong></span><br>
+    <span><strong>end<strong style="color:darkcyan">s</strong>matrix</strong></span><br><br>
+  </div>
+  <div>
+    <span>or You can write like this</span><br>
+    <span><strong>begin<strong style="color:darkcyan">b</strong>matrix a &amp; b &amp; c</strong></span><br>
+    <span><strong>d &amp; e &amp; f </strong></span><br>
+    <span><strong>g &amp; h </strong></span><br>
+    <span><strong>end<strong style="color:darkcyan">b</strong>matrix</strong></span><br><br>
+  </div>
+</div>
+
+    
+    
+    Both will render as <br> \begin{array}{l}\begin{bmatrix} a & b & c \\ d & e & f \\ g & h \\ \end{bmatrix} \\ \end{array}
+     </p>
+    
+    <p><strong>N.B.</strong> <i style="color:darkcyan">Space between <strong>&</strong> is not mandatory, It is done here just for beautification of text</i></p>
+
+    
+    <h4 class="jsSubContent">Section  7.4: More Matrices Types</h4>
+    <p><i>While most commonly used matrix formats are available as functions, if you are unable to find the specific function you need, you can always utilize LaTeX to achieve the desired matrix configuration.</i>
+    </p>
+    </div>
+
+    <div id="section8" class="jsContent content-section">
+        <h3>Section 8: Handling Geometry</h3>
+        <p>You can write various geometrical notations using our pre-defined functions. </p>
+        <h4 class="jsSubContent">Section  8.1: Triangle </h4>
+        <p>You can write <strong>triangle\</strong> to get a triangle.</p>
+        <p>
+        <strong>triangle\</strong> will give \(\triangle\)<br>
+        <strong>triangledown\</strong> will give \(\triangledown\)<br>
+        <strong>triangleright\</strong> will give \(\triangleright\)<br>
+        <strong>triangleleft\</strong> will give \(\triangleleft\)
+        </p>
+        
+        <h4 class="jsSubContent">Section  8.2: Angle </h4>
+        <p><strong>Angle\</strong> will give \(\angle\)<br>
+        <strong>measuredAngle\</strong> will give \(\measuredangle\)<br> </p>
+        <h4 class="jsSubContent">Section  8.3: Parallel and Not Parallel</h4>
+     <p>
+        <strong>parallel\</strong> will give \(\parallel\) <br>
+        <strong>notParallel\</strong> will give \(\nparallel\)
+     </p>
+        <h4 class="jsSubContent">Section  8.4: Equals and not equals & Congruent</h4>
+       
+        <p> <strong>=</strong> will give \(=\) <br>
+        <strong>neq\</strong> will give \(\neq\) <br>
+        <strong>cong\</strong> will give \(\cong\)
+        </p>
+        
+        <h4 class="jsSubContent">Section  8.5: Degree and not</h4>
+        <p><strong>deg\</strong> will give \(^\circ\) <br>
+        <strong>anot\</strong> will give \(a^\circ\) <br>
+        variable<strong>not</strong> will give \(variable^\circ\) where variable can be anything.
+        </p>
+    </div>
+
+    <div id="section9" class="jsContent content-section">
+        <h3>Section 9: Comparators</h3>
+        <h4 class="jsSubContent">Section  9.1: Less Than</h4>
+        <p><strong>lt\</strong> will give \(\lt\)</p>
+        <h4 class="jsSubContent">Section  9.2: Greater Than</h4>
+        <p><strong>gt\</strong> will give \(\gt\)</p>
+        <h4 class="jsSubContent">Section  9.3: Less than Equal to</h4>
+        <p><strong>leq\</strong> will give \(\leq\) </p>
+        <h4 class="jsSubContent">Section  9.4: Greater than Equals to</h4>
+        <p><strong>geq\</strong> will give \(\geq\)</p>
+    </div>
+
+    <div id="section10" class="jsContent content-section">
+        <h3>Section 10: Set Operations</h3>
+        <h4 class="jsSubContent">Section  10.1: Belongs to</h4>
+        <p><strong>belongsto\</strong> will give \(\in\)</p>
+        <h4 class="jsSubContent">Section  10.2: Subset</h4>
+        <p><strong>subset\</strong> will give \(\subset\)</p>
+        <h4 class="jsSubContent">Section  10.3: Union</h4>
+        <p><strong>union\</strong> will give \(\cup\)</p>
+        <h4 class="jsSubContent">Section  10.4: Intersection</h4>
+        <p><strong>intersection\</strong> will give \(\cap\)</p>
+        <h4 class="jsSubContent">Section  10.5: Union</h4>
+        <p><strong>union\</strong> will give \(\cup\)</p>
+        <h4 class="jsSubContent">Section  10.6: For All</h4>
+        <p><strong>forall\</strong> will give \(\forall\)</p>
+        <h4 class="jsSubContent">Section  10.7: Implies</h4>
+        <p><strong>implies\</strong> will give \(\Rightarrow\)</p>
+</div>
+
+<div id="section11" class="jsContent content-section">
+    <h3>Section 11: Vector Operations</h3>
+    <h4 class="jsSubContent">Section  11.1: Vector</h4>
+    <p><strong>vector{constant}</strong> will give \(\overrightarrow{constant}\)</p>
+    <i><p style="color:darkcyan"><strong>constant</strong> can be anything like a, b, c ...</p></i>
+    <h4 class="jsSubContent">Section  11.2: Bar</h4>
+    <p><strong>bar{constant}</strong> will give \(\overline{constant}\)</p>
+    <i><p style="color:darkcyan"><strong>constant</strong> can be anything like a, b, c ...</p></i>
+    <h4 class="jsSubContent">Section  11.3: Unit Vector</h4>
+    <p><strong>cap{i}</strong> will give \(\hat{i}\)</p>
+    <i><p style="color:darkcyan"><strong>i</strong> can be anything like <strong>i, j, k</strong> ....</p></i>
+</div>
+
+
+<div id="section12" class="jsContent content-section">
+    <h3>Section 12: Navigation Icons</h3>
+    <h4 class="jsSubContent">Section  12.1: Implies</h4>
+    <p><strong>implies\\</strong> will give \(\Rightarrow\)</p>
+    <h4 class="jsSubContent">Section  12.2: Right Arrow</h4>
+    <p><strong>rightarrow\\</strong> will give \(\rightarrow\)</p>
+    <h4 class="jsSubContent">Section  12.3: Left Arrow</h4>
+    <p><strong>leftarrow\\</strong> will give \(\leftarrow\)</p>
+    <h4 class="jsSubContent">Section  12.4: Up Arrow</h4>
+    <p><strong>uparrow\\</strong> will give \(\uparrow\)</p>
+    <h4 class="jsSubContent">Section  12.5: Down Arrow</h4>
+    <p><strong>downarrow\\</strong> will give \(\downarrow\)</p>
+</div>
+
+<div id="section13" class="jsContent content-section">
+    <h3>Section 13: Conclusion </h3>
+    <p>I hope this guide has effectively demonstrated how to use my equation editor, designed with simplicity and power in mind. Although there are numerous advanced tools out there that employ LaTeX for complex functionalities, my editor is crafted specifically for newbies who are new to LaTeX, for small educators embarking on new ventures, or for anyone who needs to quickly draft equations on mobile devices without the expense of professional software. It’s entirely free and open to everyone, making it a perfect choice for those seeking a straightforward solution. <br><br>
+Furthermore, because my editor is built on LaTeX and MathJAX, you have the flexibility to input any specialized equations or symbols that might not be immediately available in my dialect packs. While current versions do not support LaTeX add-ons or libraries, I am committed to include this feature in future updates, thereby enhancing the range of libraries of LaTeX at your disposal. <br><br>
+For suggestions, improvements, or any feedback, please don't hesitate to contact me at <strong style="color:darkcyan"><a href="mailto:shashwata@versatilex.in">shashwata@versatilex.in</a></strong>. Your feedback is crucial as it drives the continuous refinement and effectiveness of this tool. <br><br>
+Thank you for choosing my equation editor. I am eager to support your mathematical journey with ongoing enhancements and updates.<br><br>
+<i>Happy equation writing!</i></p>
+</div>
+    
+    
+ 
+    </div> <!-- End Div -->
+ 
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('assets/misc/symbols.csv')
+    .then(response => response.text())
+    .then(data => {
+        const table = document.createElement('table');
+        const rows = data.split('\n');
+        let html = '<tr><th>Input</th><th>LaTeX Output</th><th>Description</th></tr>';
+
+        for (let i = 1; i < rows.length; i++) {
+            if (rows[i].trim() === '') continue; // Skip empty rows
+            const cells = rows[i].split(',');
+
+            // Remove quotes from description
+            const description = cells[2].replace(/"/g, '');
+            const commandStyled = `<span class="command">${cells[0].trim()}</span>`; // Apply styling to all command cells
+
+            // Ensure LaTeX commands are formatted for rendering
+            const latexFormatted = cells[1].replace(/\\\\/g, '\\'); // Format for MathJax
+
+            html += `<tr>
+                        <td>${commandStyled}</td>
+                        <td>${latexFormatted}</td>
+                        <td>${description}</td>
+                     </tr>`;
+        }
+
+        table.innerHTML = html;
+        document.getElementById('tableDiv').appendChild(table);
+        
+        // Request MathJax to typeset the new content
+        MathJax.typesetPromise([table]).catch(function (err) {
+            console.error('Error typesetting MathJax:', err);
+        }).then(function () {
+            console.log('MathJax typesetting complete');
+        });
+    })
+    .catch(error => console.error('Error loading the CSV file:', error));
+});
+
+</script>
+
+    
+    
+</body>
+</html>
+
+
+
+
+
+
+

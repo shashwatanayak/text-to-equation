@@ -1,0 +1,115 @@
+/* General body styles */
+body {
+    margin: 20px;
+    background-color: #b4f7d7;
+    color: #333;
+    font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Header styles */
+h4 {
+    color: #000;
+    text-align: center;
+    margin:0;
+}
+
+p{text-align:center;
+}
+
+
+
+/* Textarea styles */
+textarea {
+    font-family:Poppins;
+    width: 90%;
+    max-width: 800px;
+    height: 150px;
+    font-size: 16px;
+    padding: 10px;
+    margin: 20px auto;
+    display: block;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#renderedEquation {
+    width: 90%;
+    border: 1px solid #ddd;
+    padding: 20px;
+    min-height: 100px;
+    background-color: #ffffff;
+    display: block;
+    text-align: left;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-radius: 8px;
+}
+
+#renderedEquation p, 
+#renderedEquation .katex {
+    text-align: left;
+}
+
+
+
+.autocomplete{
+    color:#007bff;
+    font-weight: 800;
+    margin:5px 0 0 0;
+    
+    
+}
+
+.layout-container {
+    display: flex;
+    justify-content: space-between; /* Aligns items to opposite ends */
+    align-items: center; /* Centers items vertically */
+}
+
+#openSuggestions {
+    text-align: right;
+    background-color: #007bff; /* Light gray background for subtle contrast */
+    padding: 8px 16px; /* Padding for spacing inside the box */
+    border-radius: 4px; /* Rounded corners for a smoother look */
+    font-weight: bold; /* Makes the text bold */
+    margin-right: 10px; /* Ensures some spacing from the edge of the container */
+    text-align:center;
+    color:#fff;
+}
+
+
+/* Button styles */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Additional styles for any popup or modal actions */
+#popup {
+    background-color: #28a745; /* Green for contrast */
+}
+
+#popup:hover {
+    background-color: #19692c;
+}
+
+
+

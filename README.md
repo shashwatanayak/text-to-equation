@@ -23,7 +23,7 @@ Visit our live tool [here](https://shashwatanayak.github.io/text-to-equation/).
 1. **Type Your Equation**: Enter your equation in plain text in the provided textarea.
 2. **Automatic Rendering**: The equation will automatically render below the input area.
 3. **Download as PNG/SVG/PDF**: Click the "Download" button to download the rendered equation as a PNG/SVG/PDF format.
-4. **Suggestions Box**: You can click the Suggestions Button to popup the draggable suggestion box, If you g=forgot any syntax, you can always search the syntax in the suggestion box.
+4. **Suggestions Box**: You can click the Suggestions Button to popup the draggable suggestion box, If you forgot any syntax, you can always search the syntax in the suggestion box.
 5. **User Manual**: You can access the user manual by clicking on "User Manual," which will open it in a new tab. This manual provides detailed, step-by-step instructions and comprehensive usage information for this application. It features a well-organized content section with links that directly take you to specific page sections. Additionally, there is a search box available that allows you to search through all the content in the help section, including tables.
 
 ## Shortcuts and Symbols

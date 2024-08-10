@@ -81,6 +81,11 @@ The application supports a variety of shortcuts for common LaTeX commands:
 | `partial{x}`          | `∂x`                    |
 | and many more                                   |
 
+## Technology used
+
+- **HTML**
+- **Javascript**
+  
 ## Benefits
 
 - **Efficiency**: Saves time by converting equations faster than manual LaTeX coding.
